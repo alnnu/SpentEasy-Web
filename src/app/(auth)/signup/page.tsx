@@ -2,6 +2,7 @@
 import SignUpErrorToasts from '@/components/toasts/SignupErrorToasts';
 import { Button } from '@/components/ui/button';
 import auth from '@/service/auth';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation'  
 import React, { useState } from 'react'
 
@@ -46,13 +47,15 @@ const SingUp = () => {
       <div className='text-center space-y-4 pt-16'> 
         <h1 className='font-bold text-3xl'>Create Account</h1>
       </div>
-      <div className='border bg-white mt-16 rounded-xl p-5 shadow-xl '> 
-         <div className="flex">
+      <div className='border bg-white mt-16 rounded-xl p-5 shadow-xl'> 
+
+          <div className='text-center pt-4'>Pleace fill the filds</div>
+
+         <div>
                         <form
                             onSubmit={(event) => handlerSingin(event)}
-                            className="mx-10"
                         >
-                            <div className="md:flex gap-4 px-10">
+                            <div className="md:flex gap-4">
                                 <input
                                     className="p-2 mt-8 rounded-xl border w-full"
                                     type="name"
@@ -74,7 +77,7 @@ const SingUp = () => {
                                     }
                                 />
                             </div>
-                            <div className="justify-center mt-2 pl-10 pr-10">
+                            <div className="justify-center mt-2">
                                 <div className="pb-2 flex flex-col space-y-2">
                                     <input
                                         className="p-2 rounded-xl border w-full "
@@ -112,10 +115,13 @@ const SingUp = () => {
                                         }}  
                                     />
                                 </div>
+                                <div>
+                                  <Link href="/signin" className="text-sm">Aready have? <span className="underline">Sign in</span></Link>
+                                </div>
                                
-                                <div className="pt-2 pb-2 flex justify-center">
+                                <div className="py-2  flex justify-center">
                                     <Button
-                                        className="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300 w-1/2 "
+                                        className="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300 w-full mt-7 "
                                         type="submit"
                                     >
                                         Registrar
