@@ -3,6 +3,7 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
 
+
 const handler = NextAuth({
     providers: [
         CredentialsProvider({
@@ -12,28 +13,43 @@ const handler = NextAuth({
                 email: { label: "email", type: "text" },
                 password: { label: "senha", type: "password" },
             },
-            async authorize(credentials, req) {
-                const res = await auth.doLogin(credentials?.email, credentials?.password)
-                console.log(res + "sdadsd")
-                
-                if (res.status = 200) {
-                    console.log(res)
-                    return res.data
-                }
+            async authorize(credentials) {
+                let user:{email:string, name:string, token:string} | null = null
 
-                return null
-            }
-        })
+                if (typeof credentials !== "undefined") {
+                    const resp = await auth.doLogin(
+                        credentials.email,
+                        credentials.password
+                    ).then((resp) => {
+                        user = {
+                            ...resp.data
+                        }
+                    })
+                    return user
+                } else {
+                    return null;
+                }
+            },
+        }),
     ],
+    secret: process.env.SECRET,
     callbacks: {
-        async jwt({ token, user }) {
-            user && (token.user = user)
-            return token
+        jwt: async ({ token, user}) => {
+            console.log(user)
+            // // objeto user é a resposta da API
+            // if (user) {
+            //     const userData = user as unknown as any;
+            //     return userData.jwttoken   
+            // }
+            return token;
         },
-        async session({ session, token }) {
-            session = token.user as any
-            return session
-        }
+        session: async ({ session, token: jwttoken }) => {
+            //O objeto token ou jwt é o objeto criado na função callback
+            return {
+                ...session,
+                api_token: jwttoken,
+            };
+        },
     },
     session: {
         strategy: "jwt",

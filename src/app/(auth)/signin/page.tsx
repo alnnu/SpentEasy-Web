@@ -3,12 +3,21 @@ import { Button } from "@/components/ui/button";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const SingIn = () => {
   const session = useSession();
   const router = useRouter();
 
+  useEffect(() => {
+    if(session.status == "authenticated") {
+      router.push("/")
+    }
+  })
+
+  
   const handlerLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -24,7 +33,6 @@ const SingIn = () => {
       });
 
       if (!res?.error) {
-        // console.log(res + "lll")
         router.push("/home");
       } else {
         console.log(res);
@@ -34,7 +42,6 @@ const SingIn = () => {
     }
   };
 
-  console.log(session.status);
   return (
     <div className="h-screen bg-slate-200 flex flex-col align-middle items-center justify-center px-4">
       <div className="text-center space-y-4 pt-16">
