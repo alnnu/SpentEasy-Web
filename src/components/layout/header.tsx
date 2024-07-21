@@ -7,7 +7,7 @@ import WelcomeMsg from "../welcomeMsg";
 
 function Header() {
   return (
-    <header className="bg-blue-700 px-4 lg:px-14 pt-8  pb-36">
+    <header className="bg-blue-700 px-4 lg:px-14 pt-8  md:pb-36">
       <div className="flex flex-col">
         <div className="w-full lg:flex items-center lg:justify-between mb-14">
           <div className="flex justify-between gap-16">
