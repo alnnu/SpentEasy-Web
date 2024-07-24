@@ -1,6 +1,7 @@
 import auth from "@/service/auth"
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { use } from "react"
 
 
 
@@ -35,12 +36,14 @@ const handler = NextAuth({
     secret: process.env.SECRET,
     callbacks: {
         jwt: async ({ token, user}) => {
-            console.log(user)
-            // // objeto user é a resposta da API
-            // if (user) {
-            //     const userData = user as unknown as any;
-            //     return userData.jwttoken   
-            // }
+            // objeto user é a resposta da API
+            if (user) {
+                const userData = user as unknown as any;
+                return {
+                    jwttoken: userData.token,
+                    ...userData
+                }   
+            }
             return token;
         },
         session: async ({ session, token: jwttoken }) => {

@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
+import NewAccountSheetProvider from "@/components/account/newAccountSheetProvider";
+
 export default async function Home() {
   return (
-   <p>
-    Authenticade route
-    <Button>sad</Button>
-   </p>
+    <>
+      <NewAccountSheetProvider />
+    </>
   );
 }

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { use, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useMedia } from "react-use";
