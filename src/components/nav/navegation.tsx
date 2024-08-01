@@ -20,15 +20,19 @@ function Navegation() {
   const routes: { link: string; label: string }[] = [
     {
       link: "/",
-      label: "dashboard",
+      label: "Dashboard",
     },
     {
       link: "/transaction",
-      label: "transaction",
+      label: "Transaction",
+    },
+    {
+      link: "/accounts",
+      label: "Accounts",
     },
     {
       link: "/setting",
-      label: "setting",
+      label: "Setting",
     },
   ];
 

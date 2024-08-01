@@ -13,7 +13,7 @@ const SingIn = () => {
     if(session.status == "authenticated") {
       router.push("/")
     }
-  })
+  }, [session])
 
   const handlerLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     
@@ -32,7 +32,7 @@ const SingIn = () => {
       });
 
       if (!res?.error) {
-        router.push("/home");
+        router.push("/");
       } else {
         console.log(res);
       }

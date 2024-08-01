@@ -1,5 +1,5 @@
 
-type Account = {
+type User = {
     email: string,
     name: string,
     lastName: string,
@@ -13,4 +13,12 @@ type SignUpError = {
     path: string,
     type: string,
     value: string,
+}
+
+type Account = {
+    createdAt: string
+    id: string
+    name: string
+    updatedAt: string
+    userEmail: string
 }

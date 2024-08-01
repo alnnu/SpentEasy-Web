@@ -3,7 +3,6 @@ import NewAccountSheetProvider from "@/components/account/newAccountSheetProvide
 export default async function Home() {
   return (
     <>
-      <NewAccountSheetProvider />
     </>
   );
 }

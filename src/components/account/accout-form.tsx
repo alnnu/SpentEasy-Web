@@ -4,7 +4,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +15,7 @@ import account from "@/service/account";
 
 import { toast } from "sonner";
 
-function AccountForm({ id }: { id: string | undefined }) {
+function AccountForm({ id, OnChangeHandler }: { id: string | undefined; OnChangeHandler: () => void  }) {
   const schema = z.object({
     name: z.string().min(2, {
       message: "Username must be at least 2 characters.",
@@ -33,14 +32,19 @@ function AccountForm({ id }: { id: string | undefined }) {
   const handlerSubmit = async (values: z.infer<typeof schema>) => {
     if (!id) {
       await account.create(values).then((res) => {
-        if(res.status = 201) {
-          toast.success("Account created")
-        }else if(res.status = 400){
-          toast.error(res.data.error.msg)
+        if ((res.status = 201)) {
+          toast.success("Account created");
+        } else if ((res.status = 400)) {
+          toast.error(res.data.error.msg);
         }
       });
     }
   };
+  const changeParentState = () => {
+    console.log("sad")
+    OnChangeHandler();
+  };
+
   return (
     <Form {...form}>
       <form
@@ -59,7 +63,7 @@ function AccountForm({ id }: { id: string | undefined }) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" onClick={changeParentState}>
           {id ? "Update Account" : "Create Account"}
         </Button>
         {id ? (

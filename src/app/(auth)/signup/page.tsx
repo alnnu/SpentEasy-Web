@@ -9,7 +9,7 @@ import React, { useState } from "react";
 const SingUp = () => {
   const router = useRouter();
 
-  const [register, setRegister] = useState<Account>({
+  const [register, setRegister] = useState<User>({
     email: "",
     name: "",
     lastName: "",

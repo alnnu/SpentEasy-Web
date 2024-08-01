@@ -7,7 +7,7 @@ class Auth {
             password: password,
         });
     }
-    create(account: Account) {
+    create(account: User) {
         return api.post('auth/create', account)
     }
 }
