@@ -149,10 +149,10 @@ function transaction() {
   };
 
   const Delete = async (row: any) => {
-    // const rows = row.map((r: any) => r.original);
-    // await category.delete(rows).then(() => {
-    //   toast.success("Accounts deleted");
-    // });
+    const rows = row.map((r: any) => r.original);
+    await Transaction.delete(rows).then(() => {
+      toast.success("Transactions deleted");
+    });
 
     fetchData();
   };
@@ -163,7 +163,7 @@ function transaction() {
       <Card className="border-none drop-shadow-sm">
         <CardHeader className="gap-y-2 md:flex-row md:items-center md:justify-between">
           <CardTitle className="text-xl line-clamp-1">
-            Categories page
+            Transaction page
           </CardTitle>
           <Button
             size="sm"

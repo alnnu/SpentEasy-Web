@@ -18,8 +18,8 @@ class Transaction {
         return api.get('transacao/')
     }
 
-    delete(account: AccountType[]) {
-        return api.delete('transacao/delete', {data:{categories:  account}})
+    delete(Transaction: AccountType[]) {
+        return api.delete('transacao/delete', {data:{transactions:  Transaction}})
     }
 }
 
