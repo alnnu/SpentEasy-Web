@@ -11,8 +11,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import account from "@/service/account";
 import React, { useEffect, useState } from "react";
+import category from "@/service/category";
 
 import {
   Sheet,
@@ -29,9 +29,9 @@ import { DataTable } from "@/components/dataTable";
 import { FiPlus } from "react-icons/fi";
 
 
-function Accounts() {
+function Categories() {
 
-  const [data, setdata] = useState<AccountData[]>([
+  const [data, setdata] = useState<CategoryData[]>([
     {
       id: "",
       name: "",
@@ -43,7 +43,7 @@ function Accounts() {
   const [open, setIsOpen] = useState(false);
 
   const fetchData = async () => {
-    await account.getAll().then((resp) => {
+    await category.getAll().then((resp) => {
       setdata(resp.data);
     });
   };
@@ -65,19 +65,19 @@ function Accounts() {
   });
 
   const handlerSubmit = async (values: z.infer<typeof schema>) => {
-    await account.create(values).then((res) => {
-      if ((res.status = 201)) {
-        toast.success("Account created");
-        fetchData()
-      } else if ((res.status = 400)) {
-        toast.error(res.data.error.msg);
-      }
-    });
+    await category.create(values).then((res) => {
+        if ((res.status = 201)) {
+          toast.success("category created");
+          fetchData()
+        } else if ((res.status = 400)) {
+          toast.error(res.data.error.msg);
+        }
+      });
   };
 
   const Delete = async (row: any) => {
     const rows = row.map((r: any) => r.original);
-    await account.delete(rows).then(() => {
+    await category.delete(rows).then(() => {
       toast.success("Accounts deleted");
     });
 
@@ -88,7 +88,7 @@ function Accounts() {
     <div className="max-w-screen-2xl mx-auto w-full pb-10 md:-mt-24">
       <Card className="border-none drop-shadow-sm">
         <CardHeader className="gap-y-2 md:flex-row md:items-center md:justify-between">
-          <CardTitle className="text-xl line-clamp-1">Accounts page</CardTitle>
+          <CardTitle className="text-xl line-clamp-1">Categories page</CardTitle>
           <Button
             size="sm"
             className="text-center"
@@ -110,9 +110,9 @@ function Accounts() {
       <Sheet open={open} onOpenChange={setIsOpen}>
         <SheetContent className="space-y-4">
           <SheetHeader>
-            <SheetTitle>New Accout</SheetTitle>
+            <SheetTitle>New Category</SheetTitle>
             <SheetDescription>
-              Create a new account to track your transaction.
+              Create a new category to track your transaction.
             </SheetDescription>
           </SheetHeader>
           <Form {...form}>
@@ -128,7 +128,7 @@ function Accounts() {
                     <FormLabel>name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="e.g Cash, Bank, Credit Card"
+                        placeholder="e.g Food, Travel, etc."
                         {...field}
                       />
                     </FormControl>
@@ -136,7 +136,7 @@ function Accounts() {
                 )}
               />
               <Button type="submit" className="w-full">
-                Create Account
+                Create category
               </Button>
             </form>
           </Form>
@@ -146,4 +146,4 @@ function Accounts() {
   );
 }
 
-export default Accounts;
+export default Categories;

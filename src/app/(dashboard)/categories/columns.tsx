@@ -4,7 +4,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-import account from "@/service/account";
 
 
 import {
@@ -30,13 +29,10 @@ import {
 
 import { FiEdit3, FiTrash2 } from "react-icons/fi";
 import ConfirnModal from "@/components/modal/confirnModal";
-import { useRouter } from "next/navigation";
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+import category from "@/service/category";
 
 
-export const columns: ColumnDef<AccountData>[] = [
+export const columns: ColumnDef<CategoryData>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -120,14 +116,14 @@ export const columns: ColumnDef<AccountData>[] = [
       });
 
       const handlerSubmit = async (values: z.infer<typeof schema>) => {
-        await account.update(values, row.original.id).then(() => {
+        await category.update(values, row.original.id).then(() => {
           window.location.reload()
         })
       };
       const OnDelete = async (row: any) => {
         const rows: AccountType[] = [row.original]
-        console.log("sd")
-        await account.delete(rows).then(() => {
+        await category.delete(rows).then(() => {
+          console.log("sa")
           window.location.reload()
         })
       }

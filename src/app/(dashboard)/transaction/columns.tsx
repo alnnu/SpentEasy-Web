@@ -4,9 +4,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-import account from "@/service/account";
-
-
 import {
   Form,
   FormControl,
@@ -30,13 +27,33 @@ import {
 
 import { FiEdit3, FiTrash2 } from "react-icons/fi";
 import ConfirnModal from "@/components/modal/confirnModal";
-import { useRouter } from "next/navigation";
+import category from "@/service/category";
+import { cn } from "@/lib/utils";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
+export type TransactionData = {
+  id: string;
+  account: {
+    id: string;
+    name: string;
+    createdAt: string;
+    userEmail: string;
+  };
+  category: {
+    id: string;
+    name: string;
+    createdAt: string;
+    userEmail: string;
+  };
+  value: number;
+  date: string;
+  description: string;
+  accountId: string;
+  isExpense: boolean
+};
 
-
-export const columns: ColumnDef<AccountData>[] = [
+export const columns: ColumnDef<TransactionData>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -74,28 +91,82 @@ export const columns: ColumnDef<AccountData>[] = [
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "value",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          name
+          value
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+
+          });
+      return <>
+      <div className={cn("px-4 py-2 w-fit h-fit  rounded-full", row.original.isExpense ? "bg-red-600/25": "bg-blue-600/25")}>
+        {row.original.isExpense ? "-" + formatter.format(row.original.value/100): formatter.format(row.original.value/100) }      
+      </div>
+      </>;
+    },
+  },
+  {
+    accessorKey: "description",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          description
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "date",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          create day
+          date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "account.name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          accout
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "category.name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          category
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -120,17 +191,17 @@ export const columns: ColumnDef<AccountData>[] = [
       });
 
       const handlerSubmit = async (values: z.infer<typeof schema>) => {
-        await account.update(values, row.original.id).then(() => {
-          window.location.reload()
-        })
+        await category.update(values, row.original.id).then(() => {
+          window.location.reload();
+        });
       };
       const OnDelete = async (row: any) => {
-        const rows: AccountType[] = [row.original]
-        console.log("sd")
-        await account.delete(rows).then(() => {
-          window.location.reload()
-        })
-      }
+        const rows: AccountType[] = [row.original];
+        await category.delete(rows).then(() => {
+          console.log("sa");
+          window.location.reload();
+        });
+      };
       return (
         <>
           <Button
@@ -145,7 +216,7 @@ export const columns: ColumnDef<AccountData>[] = [
               <SheetHeader>
                 <SheetTitle>edit Accout</SheetTitle>
                 <SheetDescription>
-                  Edit {row.original.name} account to track your transaction.
+                  {/* Edit {row.original.name} account to track your transaction. */}
                 </SheetDescription>
               </SheetHeader>
               <Form {...form}>

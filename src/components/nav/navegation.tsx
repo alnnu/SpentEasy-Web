@@ -27,6 +27,10 @@ function Navegation() {
       label: "Transaction",
     },
     {
+      link: "/categories",
+      label: "Categories",
+    },
+    {
       link: "/accounts",
       label: "Accounts",
     },
