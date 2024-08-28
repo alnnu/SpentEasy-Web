@@ -2,7 +2,7 @@ import axios from "axios";
 import { getSession } from "next-auth/react";
 
 //const api_url = 'http://localhost:3080/api/v1'
-const api_url = 'http://spenteasyapi.alnnu.tech/api/v1'
+const api_url = 'https://spenteasyapi.alnnu.tech/api/v1'
 
 
 export const api = axios.create({
