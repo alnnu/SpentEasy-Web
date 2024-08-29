@@ -288,7 +288,7 @@ function transaction() {
                   <FormItem>
                     <FormLabel>Value</FormLabel>
                     <FormControl>
-                      <Input placeholder="Value" {...field} onChange={event => field.onChange(+event.target.value)}  type="number"/>
+                      <Input placeholder="Value" {...field} value={undefined} onChange={event => field.onChange(+event.target.value)} type="number" step="0.01" min="0" />
                     </FormControl>
                   </FormItem>
                 )}
