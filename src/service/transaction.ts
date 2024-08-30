@@ -10,7 +10,12 @@ class Transaction {
         return api.post('transacao/create', values)
     }
 
-    update(values: {name:string}, id: string) {
+    update(values: {value: number,
+        accountId: string,
+        categoryId: string,
+        description: string,
+        date: Date,
+        isExpense: boolean}, id: string) {
         return api.put(`transacao/${id}`, values)
     }
 

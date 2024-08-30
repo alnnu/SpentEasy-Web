@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import {ArrowUpDown, CalendarIcon} from "lucide-react";
 
 import {
   Form,
@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import React, {useEffect, useState} from "react";
 
 import {
   Sheet,
@@ -27,8 +27,23 @@ import {
 
 import { FiEdit3, FiTrash2 } from "react-icons/fi";
 import ConfirnModal from "@/components/modal/confirnModal";
-import category from "@/service/category";
 import { cn } from "@/lib/utils";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {format} from "date-fns";
+import {Calendar} from "@/components/ui/calendar";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import {Textarea} from "@/components/ui/textarea";
+import Transaction from "@/service/transaction";
+import Category from "@/service/category";
+import Account from "@/service/account";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -177,27 +192,72 @@ export const columns: ColumnDef<TransactionData>[] = [
     cell: ({ row }) => {
       const [open, setIsOpen] = useState(false);
       const [openModal, setIsOpenModal] = useState(false);
+
+      const [categories, setCategories] = useState<CategoryData[]>([
+        {
+          id: "",
+          name: "",
+          createdAt: "",
+          userEmail: "",
+        },
+      ]);
+
+      const [accounts, setAccounts] = useState<AccountData[]>([
+        {
+          id: "",
+          name: "",
+          createdAt: "",
+          userEmail: "",
+        },
+      ]);
+
+      const fetchCategories = async () => {
+        await Category.getAll().then((res) => {
+          setCategories(res.data);
+        });
+      };
+
+      const fetchAccounts = async () => {
+        await Account.getAll().then((res) => {
+          setAccounts(res.data);
+        });
+      };
+
+      useEffect(() => {
+        fetchCategories();
+        fetchAccounts();
+      }, []);
+
+
       const schema = z.object({
-        name: z.string().min(2, {
-          message: "Username must be at least 2 characters.",
-        }),
+        value: z.number().min(0, "Can not be less than 0"),
+        accountId: z.string(),
+        categoryId: z.string(),
+        description: z.string(),
+        date: z.date(),
+        isExpense: z.boolean(),
       });
 
       const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: {
-          name: "",
+          value: 0,
+          accountId: "",
+          categoryId: "",
+          description: "",
+          date: undefined,
+          isExpense: false,
         },
       });
 
       const handlerSubmit = async (values: z.infer<typeof schema>) => {
-        await category.update(values, row.original.id).then(() => {
+        await Transaction.update(values, row.original.id).then(() => {
           window.location.reload();
         });
       };
       const OnDelete = async (row: any) => {
         const rows: AccountType[] = [row.original];
-        await category.delete(rows).then(() => {
+        await Transaction.delete(rows).then(() => {
           console.log("sa");
           window.location.reload();
         });
@@ -214,41 +274,156 @@ export const columns: ColumnDef<TransactionData>[] = [
           <Sheet open={open} onOpenChange={setIsOpen}>
             <SheetContent className="space-y-4">
               <SheetHeader>
-                <SheetTitle>edit Accout</SheetTitle>
-                <SheetDescription>
-                  {/* Edit {row.original.name} account to track your transaction. */}
-                </SheetDescription>
+                <SheetTitle>edit your transaction</SheetTitle>
               </SheetHeader>
               <Form {...form}>
                 <form
-                  className="space-y-4 pt-4"
-                  onSubmit={form.handleSubmit(handlerSubmit)}
+                    className="space-y-4 pt-4"
+                    onSubmit={form.handleSubmit(handlerSubmit)}
                 >
                   <FormField
-                    name="name"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>name</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="e.g Cash, Bank, Credit Card"
-                            {...field}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
+                      control={form.control}
+                      name="date"
+                      render={({ field }) => (
+                          <FormItem>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    className={cn(
+                                        "w-full justify-start text-left font-normal",
+                                        !field.value && "text-muted-foreground"
+                                    )}
+                                >
+                                  <CalendarIcon className="size-4 mr-2" />
+                                  {field.value ? (
+                                      format(field.value, "PPP")
+                                  ) : (
+                                      <span>Pick a date</span>
+                                  )}
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent>
+                                <Calendar
+                                    mode="single"
+                                    selected={field.value}
+                                    onSelect={field.onChange}
+                                />
+                              </PopoverContent>
+                            </Popover>
+                          </FormItem>
+                      )}
+                  />
+                  <FormField
+                      control={form.control}
+                      name="categoryId"
+                      render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Category</FormLabel>
+                            <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder={"Select an category"} />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectLabel>Categories</SelectLabel>
+                                  {categories.map((item, i) => (
+                                      <SelectItem key={i} value={item.id}>
+                                        {item.name}
+                                      </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          </FormItem>
+                      )}
+                  />
+                  <FormField
+                      control={form.control}
+                      name="accountId"
+                      render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Account</FormLabel>
+                            <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder={"Select an account"} />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectLabel>Accounts</SelectLabel>
+                                  {accounts.map((item, i) => (
+                                      <SelectItem key={i} value={item.id}>
+                                        {item.name}
+                                      </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          </FormItem>
+                      )}
+                  />
+                  <FormField
+                      name="value"
+                      control={form.control}
+                      render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Value</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Value" {...field} value={row.original.value/100} onChange={event => field.onChange(+event.target.value)} type="number" step="0.01" min="0" />
+                            </FormControl>
+                          </FormItem>
+                      )}
+                  />
+                  <FormField
+                      control={form.control}
+                      name="isExpense"
+                      render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 ">
+                            <FormControl>
+                              <Checkbox
+                                  checked={row.original.isExpense}
+                                  onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>This transaction is an expense?</FormLabel>
+                            </div>
+                          </FormItem>
+                      )}
+                  />
+                  <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Notes</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                  placeholder="Notes of your payment"
+                                  className="resize-none"
+                                  {...field}
+                                  value={row.original.description}
+                              />
+                            </FormControl>
+                          </FormItem>
+                      )}
                   />
                   <Button type="submit" className="w-full">
-                    Save
+                    Edit category
                   </Button>
                   <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => {
-                      setIsOpenModal(true);
-                    }}
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => {
+                        setIsOpenModal(true);
+                      }}
                   >
                     <FiTrash2 className="size-4 mr-2" />
                     Delete
