@@ -375,7 +375,7 @@ export const columns: ColumnDef<TransactionData>[] = [
                           <FormItem>
                             <FormLabel>Value</FormLabel>
                             <FormControl>
-                              <Input placeholder="Value" {...field} value={row.original.value/100} onChange={event => field.onChange(+event.target.value)} type="number" step="0.01" min="0" />
+                              <Input placeholder="Value" {...field}  onChange={event => field.onChange(+event.target.value)}  type="number" step="0.01" min="0" />
                             </FormControl>
                           </FormItem>
                       )}
@@ -387,7 +387,6 @@ export const columns: ColumnDef<TransactionData>[] = [
                           <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 ">
                             <FormControl>
                               <Checkbox
-                                  checked={row.original.isExpense}
                                   onCheckedChange={field.onChange}
                               />
                             </FormControl>
@@ -408,7 +407,7 @@ export const columns: ColumnDef<TransactionData>[] = [
                                   placeholder="Notes of your payment"
                                   className="resize-none"
                                   {...field}
-                                  value={row.original.description}
+
                               />
                             </FormControl>
                           </FormItem>
