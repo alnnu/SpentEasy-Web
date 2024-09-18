@@ -62,7 +62,7 @@ export type TransactionData = {
     userEmail: string;
   };
   value: number;
-  date: string;
+  date: Date;
   description: string;
   accountId: string;
   isExpense: boolean
@@ -407,7 +407,6 @@ export const columns: ColumnDef<TransactionData>[] = [
                                   placeholder="Notes of your payment"
                                   className="resize-none"
                                   {...field}
-
                               />
                             </FormControl>
                           </FormItem>

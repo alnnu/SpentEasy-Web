@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import React, {useEffect, useState} from "react";
+import SignUpErrorToasts from "@/components/toasts/SignupErrorToasts";
 
 const SingIn = () => {
   const session = useSession();
   const router = useRouter();
+  const [errors, setErros] = useState<[SignUpError]>();
 
   useEffect(() => {
     if(session.status == "authenticated") {
@@ -34,10 +36,11 @@ const SingIn = () => {
       if (!res?.error) {
         router.push("/");
       } else {
-        console.log(res);
+        console.log(res.error);
       }
     } catch (e) {
       console.log(e);
+
     }
   };
 
@@ -98,7 +101,9 @@ const SingIn = () => {
           {/* <SignUpErrorToasts count={errors?.length} errors={errors}/>  */}
         </div>
       </div>
+      <SignUpErrorToasts count={errors?.length} errors={errors} />
     </div>
+
   );
 };
 

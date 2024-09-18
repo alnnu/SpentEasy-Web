@@ -18,7 +18,7 @@ const handler = NextAuth({
                 let user:{email:string, name:string, token:string} | null = null
 
                 if (typeof credentials !== "undefined") {
-                    const resp = await auth.doLogin(
+                   await auth.doLogin(
                         credentials.email,
                         credentials.password
                     ).then((resp) => {
