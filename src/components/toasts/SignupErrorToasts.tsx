@@ -4,7 +4,7 @@ import { FiAlertCircle } from "react-icons/fi";
 
 
 function SignUpErrorToasts
-(props: { count: number | undefined; errors: [SignUpError] | undefined;}) {
+(props: { count: number | undefined; errors: string[] | undefined;}) {
   const { errors, count } = props;
   return (
     <>    
@@ -17,7 +17,7 @@ function SignUpErrorToasts
             <div className='w-4'>
               <FiAlertCircle  className='text-2xl'/>
             </div>
-            {errors? errors[index].msg: ""}
+            {errors? errors[index]: ""}
           </Toast.Description>
         </Toast.Root>
         ))}

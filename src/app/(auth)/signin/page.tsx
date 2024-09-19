@@ -1,15 +1,16 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { signIn, useSession } from "next-auth/react";
+import {Button} from "@/components/ui/button";
+import {signIn, useSession} from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 import React, {useEffect, useState} from "react";
 import SignUpErrorToasts from "@/components/toasts/SignupErrorToasts";
 
 const SingIn = () => {
   const session = useSession();
   const router = useRouter();
-  const [errors, setErros] = useState<[SignUpError]>();
+
+  const [error, setErrors] = useState<string[]>()
 
   useEffect(() => {
     if(session.status == "authenticated") {
@@ -32,15 +33,14 @@ const SingIn = () => {
         ...data,
         redirect: false,
       });
-
       if (!res?.error) {
         router.push("/");
       } else {
-        console.log(res.error);
+
+        setErrors(["Email or password are wrong"])
       }
     } catch (e) {
-      console.log(e);
-
+      console.error(e);
     }
   };
 
@@ -101,7 +101,7 @@ const SingIn = () => {
           {/* <SignUpErrorToasts count={errors?.length} errors={errors}/>  */}
         </div>
       </div>
-      <SignUpErrorToasts count={errors?.length} errors={errors} />
+      <SignUpErrorToasts count={error?.length} errors={error}/>
     </div>
 
   );

@@ -17,7 +17,7 @@ const SingUp = () => {
     passwordConfirm: "",
   });
 
-  const [errors, setErros] = useState<[SignUpError]>();
+  const [errors, setErros] = useState<string[]>();
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value;
@@ -36,8 +36,11 @@ const SingUp = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
-        setErros(error.response.data.errors);
+       let errors: string[] = []
+        for (const errorElement of error.response.data.errors) {
+          errors.push(errorElement.msg)
+        }
+        setErros(errors)
       });
   };
 
