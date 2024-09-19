@@ -11,8 +11,9 @@ function LogOutButton({className, variant}: {className: string, variant: "link" 
             className={className}
             size="sm"
             variant={variant}
+            onClick={() =>signOut({callbackUrl: "/signin"})}
         >
-            <FiLogOut className="size-4" onClick={() =>signOut({callbackUrl: "/signin"})}/>
+            <FiLogOut className="size-4 " />
         </Button>
   )
 }

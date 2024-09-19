@@ -19,7 +19,7 @@ function Header() {
           <div className="lg:block hidden">
             <LogOutButton
               variant="outline"
-              className="font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus-visible:ring-offset-0 focus-visible:ring-transparent outline-none text-white focus:bg-white/30 transtion"
+              className="font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus-visible:ring-offset-0 focus-visible:ring-transparent outline-none text-white focus:bg-white/30 transtion "
             />
           </div>
         </div>
