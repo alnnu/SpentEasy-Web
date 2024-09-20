@@ -65,7 +65,7 @@ function transaction() {
         userEmail: "",
       },
       value: 0,
-      date: "",
+      date: undefined,
       description: "",
       accountId: "",
       isExpense: false,

@@ -62,7 +62,7 @@ export type TransactionData = {
     userEmail: string;
   };
   value: number;
-  date: Date;
+  date: Date | undefined;
   description: string;
   accountId: string;
   isExpense: boolean
