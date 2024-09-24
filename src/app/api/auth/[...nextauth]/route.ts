@@ -33,7 +33,6 @@ const handler = NextAuth({
             },
         }),
     ],
-    secret: process.env.SECRET,
     callbacks: {
         jwt: async ({ token, user}) => {
             // objeto user é a resposta da API
