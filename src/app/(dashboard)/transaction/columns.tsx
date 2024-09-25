@@ -62,7 +62,7 @@ export type TransactionData = {
     userEmail: string;
   };
   value: number;
-  date: Date | undefined;
+  date: Date ;
   description: string;
   accountId: string;
   isExpense: boolean
@@ -157,6 +157,14 @@ export const columns: ColumnDef<TransactionData>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell: ({ row }) => {
+      const date = row.original.date
+      return (
+          <div>
+            {row.original.date?.getDay()}
+          </div>
+      )
     },
   },
   {
