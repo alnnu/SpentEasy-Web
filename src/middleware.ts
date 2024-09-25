@@ -1,23 +1,26 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
-//  const { pathname } = req.nextUrl;
-//
-//  if (pathname === '/signin' || pathname === '/signup') {
-//    return NextResponse.next();
-//  }
-//
-//  const token = req.cookies.get('next-auth.session-token')?.value;
-//
-//  if (!token) {
-//    const loginUrl = new URL('/signin', req.url);
-//    return NextResponse.redirect(loginUrl);
-//  }
-//
-//  return NextResponse.next();
-// }
-//
-// export const config = {
-//  matcher: ['/', '/profile/:path*'],
-};
+export default async function middleware(
+    req: NextRequest
+): Promise<NextResponse | null> {
+    // const jwt = req.cookies.get("next-auth.session-token");
+    //
+    // const { pathname } = req.nextUrl;
+    // const routesToBlock = ["/", "/transaction", "/categories", "/accounts", "/setting"]
+    // if (!pathname.endsWith("/") &&  pathname !== "/signin") {
+    //     if (!jwt) {
+    //         req.nextUrl.pathname = "/signin";
+    //         return NextResponse.redirect(req.nextUrl.href);
+    //     }
+    // }
+    //
+    // if (pathname.startsWith("/signin")) {
+    //     if (jwt) {
+    //         req.nextUrl.pathname = "/";
+    //         return NextResponse.redirect(req.nextUrl.href);
+    //     }
+    // }
+
+    return null; // Return null to indicate no redirection
+}

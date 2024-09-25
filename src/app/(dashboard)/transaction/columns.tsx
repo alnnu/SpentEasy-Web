@@ -147,24 +147,16 @@ export const columns: ColumnDef<TransactionData>[] = [
   },
   {
     accessorKey: "date",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            date
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
+          </Button>
       );
-    },
-    cell: ({ row }) => {
-      const date = row.original.date
-      return (
-          <div>
-            {row.original.date?.getDay()}
-          </div>
-      )
     },
   },
   {
