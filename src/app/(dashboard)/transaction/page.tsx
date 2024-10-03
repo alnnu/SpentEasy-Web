@@ -327,7 +327,7 @@ function transaction() {
                 )}
               />
               <Button type="submit" className="w-full">
-                Create category
+                Create Transaction
               </Button>
             </form>
           </Form>

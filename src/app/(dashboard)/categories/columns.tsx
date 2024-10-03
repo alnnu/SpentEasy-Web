@@ -141,7 +141,7 @@ export const columns: ColumnDef<CategoryData>[] = [
               <SheetHeader>
                 <SheetTitle>edit Accout</SheetTitle>
                 <SheetDescription>
-                  Edit {row.original.name} account to track your transaction.
+                  Edit {row.original.name} category to track your transaction.
                 </SheetDescription>
               </SheetHeader>
               <Form {...form}>
